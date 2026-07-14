@@ -2,8 +2,8 @@ from langchain_core.documents import Document
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_ollama import ChatOllama
 
-from prompts import SYSTEM_PROMPT
-from retrieval import retrieve
+from src.prompts import SYSTEM_PROMPT
+from src.retrieval import retrieve
 
 MODEL_NAME = "llama3.2:latest"  # Ollama model
 

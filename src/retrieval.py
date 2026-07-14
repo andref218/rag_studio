@@ -4,21 +4,22 @@ from langchain_huggingface import HuggingFaceEmbeddings
 from langchain_core.documents import Document
 from langchain_core.retrievers import BaseRetriever
 
-from config import TOP_K
+from src.config import TOP_K
 
 EMBEDDING_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 
 VECTOR_DB_PATH = "data/vector_db"
 
+# Load the embedding model once when the application starts.
+embeddings = HuggingFaceEmbeddings(
+    model_name=EMBEDDING_MODEL
+)
+
 def load_vector_store() -> Chroma:
     """
     Load the existing Chroma vector database.
     """
-
-    embeddings = HuggingFaceEmbeddings(
-        model_name=EMBEDDING_MODEL
-    )
-
+  
     return Chroma(
         persist_directory=VECTOR_DB_PATH,
         embedding_function=embeddings,
