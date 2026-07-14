@@ -79,7 +79,12 @@ def chat(history):
 
     question = history[-1]["content"]
 
-    answer, documents = answer_question(question)
+    prior_history = history[:-1]
+
+    answer, documents = answer_question(
+        question,
+        prior_history,
+    )
 
     history.append(
         {

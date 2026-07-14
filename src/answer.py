@@ -7,7 +7,7 @@ to generate answers based on the provided context.
 """
 
 from langchain_core.documents import Document
-from langchain_core.messages import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage, AIMessage
 from langchain_ollama import ChatOllama
 
 from src.prompts import SYSTEM_PROMPT
@@ -37,12 +37,16 @@ def fetch_context(question: str) -> list[Document]:
     return retrieve(question)
 
 
-def answer_question(question: str) -> tuple[str, list[Document]]:
+def answer_question(
+    question: str,
+    history: list[dict],
+) -> tuple[str, list[Document]]:
     """
     Answer a question using Retrieval-Augmented Generation (RAG).
 
     Args:
-        question: User question.
+        question: Current user question.
+        history: Previous conversation history.
 
     Returns:
         Tuple containing:
@@ -68,8 +72,25 @@ def answer_question(question: str) -> tuple[str, list[Document]]:
     # Build the conversation sent to the language model.
     messages = [
         SystemMessage(content=system_prompt),
-        HumanMessage(content=question),
     ]
+
+    for message in history:
+
+        if message["role"] == "user":
+
+            messages.append(
+                HumanMessage(content=message["content"])
+            )
+
+        elif message["role"] == "assistant":
+
+            messages.append(
+                AIMessage(content=message["content"])
+            )
+
+    messages.append(
+        HumanMessage(content=question)
+    )
 
     # Generate the final answer.
     response = llm.invoke(messages)
@@ -81,7 +102,10 @@ if __name__ == "__main__":
 
     question = input("Question: ")
 
-    answer, documents = answer_question(question)
+    answer, documents = answer_question(
+        question,
+        history=[],
+    )
 
     print("\nQuestion:\n")
     print(question)
