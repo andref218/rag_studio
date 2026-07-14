@@ -32,5 +32,4 @@ htmlcov/
 # Hugging Face cache (opcional)
 .cache/
 
-data/vector_db/*
-data/uploaded_documents/*
+data/

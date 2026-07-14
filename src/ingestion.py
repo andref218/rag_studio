@@ -27,12 +27,18 @@ def ingest_documents(pdf_directory: Path):
     """
 
     # Load PDF documents.
+    yield 25, "📄 Loading PDF documents..."
+
     documents = load_documents(pdf_directory)
 
     # Split documents into smaller chunks.
+    yield 50, "✂️ Creating document chunks..."
+
     chunks = create_chunks(documents)
 
     # Create the vector database.
+    yield 75, "🧠 Generating embeddings..."
+
     create_vector_store(chunks)
 
     print("\nDocument ingestion completed successfully.")

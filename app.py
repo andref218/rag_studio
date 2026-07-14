@@ -17,6 +17,12 @@ def format_context(documents):
     Format retrieved documents for display.
     """
 
+    if not documents:
+        return (
+            "## Retrieved Documents 📚\n\n"
+            "*No documents were retrieved for this message.*"
+        )
+
     result = "<h2 style='color:#ff7800;'>📚 Retrieved Documents</h2><br>"
 
     for rank, document in enumerate(documents, start=1):
@@ -46,31 +52,30 @@ def format_context(documents):
     return result
 
 
-def index_documents(files, progress=gr.Progress()):
+def index_documents(files):
     """
     Save uploaded PDF files and create the vector database.
     """
 
     if not files:
-        return "Please upload at least one PDF. ⚠️"
+        yield 0, "Please upload at least one PDF. ⚠️"
+        return
 
-    progress(0.1, desc="Saving uploaded PDF files...")
+    yield 10, "Saving uploaded PDF files... 💾 "
 
     pdf_directory = save_uploaded_files(files)
 
-    progress(0.3, desc="Loading and chunking documents...")
+    for progress, message in ingest_documents(pdf_directory):
+        yield progress, message
 
-    progress(0.6, desc="Generating embeddings...")
-
-    ingest_documents(pdf_directory)
-
-    progress(1.0, desc="Indexing completed!")
-
-    return f"""
+    yield (
+        100,
+        f"""
         Successfully indexed **{len(files)}** PDF document(s).
-        The documents are now ready for semantic search. ✅ 
-    """
 
+        The documents are now ready for semantic search. ✅
+        """
+    )
 
 def chat(history):
     """
@@ -135,20 +140,29 @@ def main():
 
             gr.Markdown("## Document Ingestion 📄")
 
-            with gr.Row():
+           
 
-                upload = gr.File(
-                    label="Upload PDF Documents",
-                    file_types=[".pdf"],
-                    file_count="multiple",
-                    scale=4,
+            upload = gr.File(
+                label="Upload PDF Documents",
+                file_types=[".pdf"],
+                file_count="multiple",
+                scale=4,
+            )
+
+            index_button = gr.Button(
+                "Index Documents",
+                variant="primary",
+                scale=1,
                 )
 
-                index_button = gr.Button(
-                    "Index Documents",
-                    variant="primary",
-                    scale=1,
-                )
+            progress_bar = gr.Slider(
+                minimum=0,
+                maximum=100,
+                value=0,
+                step=1,
+                interactive=False,
+                label="Indexing Progress",
+        )
 
             status = gr.Markdown(
                 "No documents indexed."
@@ -184,7 +198,10 @@ def main():
         index_button.click(
             fn=index_documents,
             inputs=upload,
-            outputs=status,
+            outputs=[
+                progress_bar,
+                status,
+            ],
         )
 
         message.submit(
