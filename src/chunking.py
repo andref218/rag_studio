@@ -1,3 +1,10 @@
+"""
+Document chunking utilities.
+
+Splits loaded documents into smaller chunks that are
+suitable for embedding generation and semantic retrieval.
+"""
+
 from langchain_core.documents import Document
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 

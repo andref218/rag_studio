@@ -1,3 +1,11 @@
+"""
+Question answering.
+
+Implements the Retrieval-Augmented Generation (RAG) pipeline
+by combining retrieved document context with a language model
+to generate answers based on the provided context.
+"""
+
 from langchain_core.documents import Document
 from langchain_core.messages import HumanMessage, SystemMessage
 from langchain_ollama import ChatOllama

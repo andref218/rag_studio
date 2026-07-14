@@ -1,3 +1,10 @@
+"""
+Prompt templates.
+
+Defines the prompt templates used by the language model
+during answer generation.
+"""
+
 SYSTEM_PROMPT = """
 You are an expert assistant.
 

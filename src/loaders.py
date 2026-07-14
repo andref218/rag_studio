@@ -1,3 +1,10 @@
+"""
+Document loading.
+
+Loads PDF documents from the uploaded documents directory
+and converts each page into LangChain Document objects.
+"""
+
 from pathlib import Path
 
 from langchain_community.document_loaders import PyPDFLoader

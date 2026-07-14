@@ -1,3 +1,10 @@
+"""
+Vector database creation.
+
+Generates embeddings for document chunks and stores them
+in a persistent Chroma vector database.
+"""
+
 from pathlib import Path
 
 from langchain_chroma import Chroma

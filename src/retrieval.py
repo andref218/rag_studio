@@ -1,3 +1,10 @@
+"""
+Semantic retrieval.
+
+Loads the vector database and retrieves the most relevant
+document chunks for a user query using semantic search.
+"""
+
 from langchain_chroma import Chroma
 from langchain_huggingface import HuggingFaceEmbeddings
 
