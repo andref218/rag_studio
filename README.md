@@ -2,13 +2,19 @@
 
 A Retrieval-Augmented Generation (RAG) application for semantic question answering over PDF documents using a local Large Language Model (LLM).
 
+## Demo
+
+![RAG Studio Demo](assets/rag_studio_demo.gif)
+
+> **Note:** The demonstration uses a fictional company document created exclusively for showcasing the RAG pipeline. NovaTech Solutions is a fictitious company, and all names, policies, contact information, products, and other details are entirely fictional and do not represent any real organization.
+
+---
+
 ## Overview
 
 RAG Studio allows users to upload PDF documents, index their contents into a vector database and ask natural language questions about the uploaded documents.
 
 Instead of relying on the model's internal knowledge, answers are generated using the information retrieved from the indexed documents, reducing hallucinations and improving factual accuracy.
-
----
 
 ## Features
 
